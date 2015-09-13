@@ -13,8 +13,12 @@
 
 	<div class="container">
 
-		<h2>Hello World Spring! [hospital]</h2>
-		${1 + 2 }
+		<h2>Roles</h2>
+		
+		<c:forEach items="${roles }" var="role">
+			<c:out value="${role.id}"/> <c:out value="${role.name}"/> <br>
+		</c:forEach>
+		
 	</div>
 	
 	<jsp:include page="/WEB-INF/jsp/_footer.jsp"></jsp:include>
