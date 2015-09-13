@@ -25,6 +25,7 @@ target
 .classpath
 .project
 .tern-project
+.springBeans
 
 #Temporary/Backup files
 *.architect~
