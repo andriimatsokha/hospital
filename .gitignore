@@ -20,10 +20,11 @@ buildNumber.properties
 hs_err_pid*
 
 #Eclipse project settings
-.settings/*
-/target/
+.settings
+target
 .classpath
 .project
+.tern-project
 
 #Temporary/Backup files
 *.architect~
