@@ -28,11 +28,13 @@ CREATE SEQUENCE public.role_role_id_seq;
 CREATE TABLE public.ROLE (
                 role_id INTEGER NOT NULL DEFAULT nextval('public.role_role_id_seq'),
                 name VARCHAR(255) NOT NULL,
+                user_id INTEGER NOT NULL,
                 CONSTRAINT role_id_pk PRIMARY KEY (role_id)
 );
 
 
 ALTER SEQUENCE public.role_role_id_seq OWNED BY public.ROLE.role_id;
+
 
 CREATE SEQUENCE public.user_user_id_seq;
 
@@ -40,7 +42,6 @@ CREATE TABLE public.USER (
                 user_id INTEGER NOT NULL DEFAULT nextval('public.user_user_id_seq'),
                 login VARCHAR(50) NOT NULL,
                 password_hash VARCHAR(255) NOT NULL,
-                role_id INTEGER NOT NULL,
                 CONSTRAINT user_id_pk PRIMARY KEY (user_id)
 );
 
@@ -134,9 +135,9 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.USER ADD CONSTRAINT role_user_fk
-FOREIGN KEY (role_id)
-REFERENCES public.ROLE (role_id)
+ALTER TABLE public.ROLE ADD CONSTRAINT user_role_fk
+FOREIGN KEY (user_id)
+REFERENCES public.USER (user_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;

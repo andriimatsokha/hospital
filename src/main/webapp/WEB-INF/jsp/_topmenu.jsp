@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <!-- Static navbar -->
 <nav class="navbar navbar-default navbar-static-top">
@@ -21,6 +22,13 @@
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
+				<li>
+					<c:url var="logoutUrl" value="/logout"/>
+					<form action="${logoutUrl}" method="post">
+					  <input type="submit" value="Log out" />
+					  <sec:csrfInput/>
+					</form>
+				</li>
 				<!-- <li class="active"><a href="<c:url value="/"/>">Home</a></li> -->
 					
 					<!-- Only for doctor/admin -->
