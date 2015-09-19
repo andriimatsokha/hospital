@@ -17,35 +17,31 @@
 		<div class="row">
 			<div class="col-sm-4">
 			
-				<h2>All users</h2>
+				<h2>All employees</h2>
 				
 				<table class="table table-bordered table-striped table-condensed">
 					<thead>
 						<tr>
 							<th>#</th>
-							<th>Login</th>
-							<th>Roles</th>
-							<th>Actions</th>
+							<th>Name</th>
+							<th>Profession</th>
+							<th>Office</th>
+							<th>HireDate</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach items="${users}" var="user" varStatus="status">
+						<c:forEach items="${employees}" var="employee" varStatus="status">
 							<tr>
 								<td>${status.count }</td>
-								<td>${user.login }</td>
-								<td>
-									<c:forEach items="${user.roles}" var="role">
-										<spring:message code="role.${role.name}"/><br>
-									</c:forEach>
-								</td>
-								<td> <a href="<c:url value='/admin/employee/edit?userid=${user.id }'/>">EditProfile</a></td>
-						
+								<td>${employee.firstName } ${employee.lastName }</td>
+								<td>${employee.profession.name }</td>
+								<td>${employee.office }</td>
+								<td>${employee.hireDate }</td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
 				
-				<a class="btn btn-default" href="<c:url value='/admin/adduser'/>">Add user</a>
 			</div>
 		</div>
 	</div>

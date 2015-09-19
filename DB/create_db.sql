@@ -1,5 +1,7 @@
 --CREATE DATABASE "hospital"
 
+
+
 CREATE SEQUENCE public.patient_patient_id_seq;
 
 CREATE TABLE public.PATIENT (
@@ -23,19 +25,6 @@ CREATE TABLE public.EMPLOYEE_PROFESSION (
 
 ALTER SEQUENCE public.employee_profession_employee_profession_id_seq OWNED BY public.EMPLOYEE_PROFESSION.employee_profession_id;
 
-CREATE SEQUENCE public.role_role_id_seq;
-
-CREATE TABLE public.ROLE (
-                role_id INTEGER NOT NULL DEFAULT nextval('public.role_role_id_seq'),
-                name VARCHAR(255) NOT NULL,
-                user_id INTEGER NOT NULL,
-                CONSTRAINT role_id_pk PRIMARY KEY (role_id)
-);
-
-
-ALTER SEQUENCE public.role_role_id_seq OWNED BY public.ROLE.role_id;
-
-
 CREATE SEQUENCE public.user_user_id_seq;
 
 CREATE TABLE public.USER (
@@ -51,7 +40,7 @@ ALTER SEQUENCE public.user_user_id_seq OWNED BY public.USER.user_id;
 CREATE SEQUENCE public.employee_employee_id_seq;
 
 CREATE TABLE public.EMPLOYEE (
-                employee_id VARCHAR NOT NULL DEFAULT nextval('public.employee_employee_id_seq'),
+                employee_id INTEGER NOT NULL DEFAULT nextval('public.employee_employee_id_seq'),
                 hire_date TIMESTAMP NOT NULL,
                 first_name VARCHAR(100) NOT NULL,
                 last_name VARCHAR(100) NOT NULL,
@@ -72,7 +61,7 @@ CREATE TABLE public.DISEASE (
                 disease_name VARCHAR(255) NOT NULL,
                 closed_date TIMESTAMP NOT NULL,
                 patient_id INTEGER NOT NULL,
-                employee_id VARCHAR NOT NULL,
+                employee_id INTEGER NOT NULL,
                 CONSTRAINT disease_id_pk PRIMARY KEY (disease_id)
 );
 
@@ -113,13 +102,25 @@ CREATE TABLE public.TREATMENT_EXECUTION_HISTORY (
                 treatment_execution_history_id INTEGER NOT NULL DEFAULT nextval('public.treatment_execution_history_treatment_execution_history_id_seq'),
                 execution_date TIMESTAMP NOT NULL,
                 comment VARCHAR NOT NULL,
-                employee_id VARCHAR NOT NULL,
+                employee_id INTEGER NOT NULL,
                 treatment_id INTEGER NOT NULL,
                 CONSTRAINT treatment_execution_history_id_pk PRIMARY KEY (treatment_execution_history_id)
 );
 
 
 ALTER SEQUENCE public.treatment_execution_history_treatment_execution_history_id_seq OWNED BY public.TREATMENT_EXECUTION_HISTORY.treatment_execution_history_id;
+
+CREATE SEQUENCE public.role_role_id_seq;
+
+CREATE TABLE public.ROLE (
+                role_id INTEGER NOT NULL DEFAULT nextval('public.role_role_id_seq'),
+                name VARCHAR(255) NOT NULL,
+                user_id INTEGER NOT NULL,
+                CONSTRAINT role_id_pk PRIMARY KEY (role_id)
+);
+
+
+ALTER SEQUENCE public.role_role_id_seq OWNED BY public.ROLE.role_id;
 
 ALTER TABLE public.DISEASE ADD CONSTRAINT patient_disease_fk
 FOREIGN KEY (patient_id)
@@ -135,14 +136,14 @@ ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.ROLE ADD CONSTRAINT user_role_fk
+ALTER TABLE public.EMPLOYEE ADD CONSTRAINT user_employee_fk
 FOREIGN KEY (user_id)
 REFERENCES public.USER (user_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
-ALTER TABLE public.EMPLOYEE ADD CONSTRAINT user_employee_fk
+ALTER TABLE public.ROLE ADD CONSTRAINT user_role_fk
 FOREIGN KEY (user_id)
 REFERENCES public.USER (user_id)
 ON DELETE NO ACTION
@@ -183,3 +184,6 @@ REFERENCES public.TREATMENT (treatment_id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
+
+
+

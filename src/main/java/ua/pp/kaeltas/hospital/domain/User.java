@@ -62,7 +62,10 @@ public class User {
 		role.setUser(this);
 		roles.add(role);
 	}
-	
-	
 
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", login=" + login + ", roles=" + roles + "]";
+	}
+	
 }

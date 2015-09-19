@@ -1,5 +1,7 @@
 package ua.pp.kaeltas.hospital.web;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -9,9 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ua.pp.kaeltas.hospital.domain.Employee;
+import ua.pp.kaeltas.hospital.domain.EmployeeProfession;
 import ua.pp.kaeltas.hospital.domain.Role;
 import ua.pp.kaeltas.hospital.domain.RoleEnum;
 import ua.pp.kaeltas.hospital.domain.User;
+import ua.pp.kaeltas.hospital.service.EmployeeProfessionService;
+import ua.pp.kaeltas.hospital.service.EmployeeService;
 import ua.pp.kaeltas.hospital.service.UserService;
 
 @Controller
@@ -22,6 +28,10 @@ public class AdminController {
 	private PasswordEncoder passwordEncoder;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private EmployeeService employeeService;
+	@Autowired
+	private EmployeeProfessionService employeeProfessionService;
 	
 	@RequestMapping(value = "hashpass", method = RequestMethod.GET)
 	@ResponseBody
@@ -61,5 +71,45 @@ public class AdminController {
 	public String viewAllUsers(Model model) {
 		model.addAttribute("users", userService.findAll());
 		return "admin/viewUsers";
+	}
+	
+	@RequestMapping(value = "employees", method = RequestMethod.GET)
+	public String viewAllEmployees(Model model) {
+		model.addAttribute("employees", employeeService.findAll());
+		return "admin/viewEmployees";
+	}
+	
+	@RequestMapping(value = "employee/edit", method = RequestMethod.GET)
+	public String editEmployee(Model model, @RequestParam("userid") Integer userId) {
+		String username = userService.find(userId).getLogin();
+		model.addAttribute("username", username);
+		model.addAttribute("employee", employeeService.find(username));
+		model.addAttribute("professions", employeeProfessionService.findAll());
+		
+		return "admin/editEmployee";
+	}
+	
+	@RequestMapping(value = "employee/edit", method = RequestMethod.POST)
+	public String editEmployeePost(Model model, @RequestParam("userid") Integer userId,
+			@RequestParam String firstName, @RequestParam String lastName,
+			@RequestParam String office, @RequestParam Date hireDate,
+			@RequestParam("profession") Integer professionId
+			) {
+		EmployeeProfession profession = employeeProfessionService.find(professionId);  
+		
+		User user = userService.find(userId);
+
+		Employee employee = employeeService.find(user.getLogin());
+
+		employee.setUser(user);
+		employee.setFirstName(firstName);
+		employee.setLastName(lastName);
+		employee.setOfficeNumber(office);
+		employee.setHireDate(hireDate);
+		employee.setProfession(profession);
+		
+		employeeService.save(employee);
+		
+		return "redirect:/admin/employee/edit?userid="+userId;
 	}
 }
