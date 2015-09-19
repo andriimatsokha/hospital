@@ -23,7 +23,9 @@
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<!-- <li class="active"><a href="<c:url value="/"/>">Home</a></li> -->
-					
+				<sec:authorize access="hasRole('ADMIN')">
+					<li><a href="<c:url value="/admin/users"/>">Users</a></li>
+				</sec:authorize>
 					<!-- Only for doctor/admin -->
 					<%-- <li><a href="<c:url value="/patient/select"/>"><spring:message code="selectPatient"/></a></li>
 					<li><a href="<c:url value="/patient/add"/>"><spring:message code="registerPatient"/></a></li> --%>

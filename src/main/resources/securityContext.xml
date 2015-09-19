@@ -10,7 +10,9 @@
 		
 		<intercept-url pattern="/hashpass" access="permitAll" />
 		<intercept-url pattern="/login" access="permitAll" />
-		<intercept-url pattern="/**" access="hasRole('ADMIN')" />
+		<intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
+		<intercept-url pattern="/**" access="isAuthenticated()" />
+		
 		<form-login login-page="/login" authentication-failure-url="/login?error" />
 		<logout />
 	</http>

@@ -11,7 +11,7 @@
 </head>
 
 <body>
-	<jsp:include page="/WEB-INF/jsp/_topmenu.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/jsp/_topmenu.jsp"/>
 
 	<div class="container">
 
