@@ -22,13 +22,6 @@
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li>
-					<c:url var="logoutUrl" value="/logout"/>
-					<form action="${logoutUrl}" method="post">
-					  <input type="submit" value="Log out" />
-					  <sec:csrfInput/>
-					</form>
-				</li>
 				<!-- <li class="active"><a href="<c:url value="/"/>">Home</a></li> -->
 					
 					<!-- Only for doctor/admin -->
@@ -37,19 +30,25 @@
 				
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				<c:if test="${not empty sessionScope.user}">
+				<sec:authorize access="isAuthenticated()">
+					<sec:authentication var="user" property="principal" />
 					<li class="navbar-center"><spring:message code="greetings"/>, <strong>
-						<c:out value="${sessionScope.user.firstName}"/></strong></li>
-				</c:if>
-				<c:choose>
-					<c:when test="${empty sessionScope.user}">
-						<li><a href="<c:url value="/patient/select"/>"> <spring:message code="login"/> </a></li>
-					</c:when>
-					<c:otherwise>
-						<li><a href="<c:url value="/logout"/>"> <spring:message code="logout"/> </a></li>
-					</c:otherwise>
-				</c:choose>
-				<li><a href="?locale=en">En</a></li><li><a href="?locale=ru">Ru</a></li>
+						<c:out value="${user.username}"/></strong></li>
+				
+					<li>
+						<c:url var="logoutUrl" value="/logout"/>
+						<form class="form-group" action="${logoutUrl}" method="post">
+						  <button class="btn btn-default" type="submit"> <spring:message code="logout"/> </button>
+						  <sec:csrfInput/>
+						</form>
+					</li>
+				</sec:authorize>
+				<sec:authorize access="isAnonymous()">
+					<li><a href="<c:url value="/login"/>"> <spring:message code="login"/> </a></li>
+				</sec:authorize>
+				
+				<li><a href="?locale=en">En</a></li>
+				<li><a href="?locale=ru">Ru</a></li>
 				<c:if test="${not empty sessionScope.user}">
 					<li>
 						<%-- <form class="form-inline navbar-center-form">

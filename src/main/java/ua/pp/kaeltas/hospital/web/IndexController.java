@@ -56,4 +56,9 @@ public class IndexController {
 		//return viewAllRoles(model);
 	}
 	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login() {
+		return "login";
+	}
+	
 }
