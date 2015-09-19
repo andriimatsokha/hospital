@@ -37,8 +37,8 @@
 				
 					<li>
 						<c:url var="logoutUrl" value="/logout"/>
-						<form class="form-group" action="${logoutUrl}" method="post">
-						  <button class="btn btn-default" type="submit"> <spring:message code="logout"/> </button>
+						<form class="form-inline navbar-center-form" action="${logoutUrl}" method="post">
+						  <button class="btn btn-link" type="submit"> <spring:message code="logout"/> </button>
 						  <sec:csrfInput/>
 						</form>
 					</li>
@@ -47,24 +47,24 @@
 					<li><a href="<c:url value="/login"/>"> <spring:message code="login"/> </a></li>
 				</sec:authorize>
 				
-				<li><a href="?locale=en">En</a></li>
-				<li><a href="?locale=ru">Ru</a></li>
-				<c:if test="${not empty sessionScope.user}">
-					<li>
-						<%-- <form class="form-inline navbar-center-form">
-				            <select class="form-control input-sm" id="language" name="language" onchange="submit()">
-				                <option value="en" ${fn:containsIgnoreCase(language, 'en') ? 'selected' : ''}>English</option>
-				                <option value="ru" ${fn:containsIgnoreCase(language, 'ru') ? 'selected' : ''}>Русский</option>
-				            </select>
-				            <c:forEach items="${param}" var="parameter">
-				            	<c:if test="${parameter.key ne 'language' and not empty parameter.value}">
-				            		<input type="hidden" name="<c:out value="${parameter.key}"/>"
-				            			value="<c:out value="${parameter.value}"/>">
-				            	</c:if>
-				            </c:forEach>
-					    </form> --%>
-					</li>
-				</c:if>
+				<li>
+					<c:choose>
+						<c:when test="${param.locale ne null }">
+							<c:set var="language" value="${param.locale }"/> 
+						</c:when>
+						<c:otherwise>
+							<c:set var="language" value="${cookie.hospitalLocaleCookie.value }"/>
+						</c:otherwise>
+					</c:choose>
+					
+					<form class="form-inline navbar-center-form">
+			            <select class="form-control input-sm" name="locale" onchange="submit()">
+			                <option value="en" ${fn:containsIgnoreCase(language, 'en') ? 'selected' : ''}>English</option>
+			                <option value="ru" ${fn:containsIgnoreCase(language, 'ru') ? 'selected' : ''}>Русский</option>
+			            </select>
+				    </form>
+				</li>
+				
 			</ul>
 		</div>
 		<!--/.nav-collapse -->

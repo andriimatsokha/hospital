@@ -20,8 +20,8 @@
 	<bean id="localeResolver"
         class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
         <property name="defaultLocale" value="en" />
-        <property name="cookieName" value="hospitalLocaleCookie"></property>
-        <property name="cookieMaxAge" value="3600"></property>
+        <property name="cookieName" value="hospitalLocaleCookie"/>
+        <property name="cookieMaxAge" value="3600"/>
     </bean>
     
 	<!-- Register the i18n *.properties -->
