@@ -16,6 +16,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(schema = "public")
@@ -32,19 +37,27 @@ public class Employee {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "hire_date")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@Past
 	private Date hireDate;
 	
 	@Column(name = "first_name")
+	@NotEmpty
+	@Size(min=1, max=100)
 	private String firstName;
 	
 	@Column(name = "last_name")
+	@NotEmpty
+	@Size(min=1, max=100)
 	private String lastName;
 	
 	@Column(name = "office_number")
+	@Size(min=1, max=100)
 	private String officeNumber;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "employee_profession_id")
+	@NotEmpty
 	private EmployeeProfession profession;
 	
 	@OneToOne
@@ -101,6 +114,10 @@ public class Employee {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	@Override

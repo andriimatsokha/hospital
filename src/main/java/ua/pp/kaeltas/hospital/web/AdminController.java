@@ -1,18 +1,18 @@
 package ua.pp.kaeltas.hospital.web;
 
-import java.util.Date;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ua.pp.kaeltas.hospital.domain.Employee;
-import ua.pp.kaeltas.hospital.domain.EmployeeProfession;
 import ua.pp.kaeltas.hospital.domain.Role;
 import ua.pp.kaeltas.hospital.domain.RoleEnum;
 import ua.pp.kaeltas.hospital.domain.User;
@@ -80,16 +80,19 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "employee/edit", method = RequestMethod.GET)
-	public String editEmployee(Model model, @RequestParam("userid") Integer userId) {
+	public String editEmployee(Model model, 
+			@RequestParam("userid") Integer userId
+			) {
 		String username = userService.find(userId).getLogin();
 		model.addAttribute("username", username);
+		
 		model.addAttribute("employee", employeeService.find(username));
 		model.addAttribute("professions", employeeProfessionService.findAll());
 		
 		return "admin/editEmployee";
 	}
 	
-	@RequestMapping(value = "employee/edit", method = RequestMethod.POST)
+	/*@RequestMapping(value = "employee/edit", method = RequestMethod.POST)
 	public String editEmployeePost(Model model, @RequestParam("userid") Integer userId,
 			@RequestParam String firstName, @RequestParam String lastName,
 			@RequestParam String office, @RequestParam Date hireDate,
@@ -111,5 +114,44 @@ public class AdminController {
 		employeeService.save(employee);
 		
 		return "redirect:/admin/employee/edit?userid="+userId;
+	}*/
+	
+	@RequestMapping(value = "employee/edit", method = RequestMethod.POST)
+	public String editEmployeePost(@RequestParam("userid") Integer userId,
+			@Valid Employee employee,
+			BindingResult bindingResult, 
+			Model model
+			) {
+		if (bindingResult.hasErrors()) {
+//			for(ObjectError err : bindingResult.getAllErrors()) {
+//				System.out.println("---ERROR>>" + err.getDefaultMessage());
+//			}
+			String username = userService.find(userId).getLogin();
+			model.addAttribute("username", username);
+			model.addAttribute("professions", employeeProfessionService.findAll());
+			
+			return "admin/editEmployee";
+		}
+	
+		employeeService.save(employee);
+		
+		return "redirect:/admin/employee/edit?userid="+userId;
 	}
+	
+//	@InitBinder
+//    private void employeeBinder(WebDataBinder binder) {
+//        binder.registerCustomEditor(Employee.class,
+//                new PropertyEditorSupport() {
+//                    @Override
+//                    public void setAsText(String employeeid) {
+//                        Employee employee = null;
+//                        if (employeeid != null && !employeeid.trim().isEmpty()) {
+//                            Integer idInt = Integer.valueOf(employeeid);
+//                            employee = employeeService.find(idInt);
+//                        }
+//                        setValue(employee);
+//                    }
+//                }
+//        );
+//    }
 }

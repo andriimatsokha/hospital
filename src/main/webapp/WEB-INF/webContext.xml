@@ -6,24 +6,34 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
 
-	<mvc:annotation-driven />
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<bean 
+					class="ua.pp.kaeltas.hospital.infrastructure.StringToEmployeeProfessionConverter" />
+				<bean 
+					class="ua.pp.kaeltas.hospital.infrastructure.StringToUserConverter" />
+			</set>
+		</property>
+	</bean>
+
+	<mvc:annotation-driven conversion-service="conversionService" />
 	<mvc:resources location="/WEB-INF/include/" mapping="/include/**" />
 
 	<context:component-scan base-package="ua.pp.kaeltas.hospital.web" />
 
 
-	<!-- <bean id="localeResolver"
-		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
-		<property name="defaultLocale" value="en" />
-	</bean> -->
+	<!-- <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver"> 
+		<property name="defaultLocale" value="en" /> </bean> -->
 
 	<bean id="localeResolver"
-        class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-        <property name="defaultLocale" value="en" />
-        <property name="cookieName" value="hospitalLocaleCookie"/>
-        <property name="cookieMaxAge" value="3600"/>
-    </bean>
-    
+		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="en" />
+		<property name="cookieName" value="hospitalLocaleCookie" />
+		<property name="cookieMaxAge" value="3600" />
+	</bean>
+
 	<!-- Register the i18n *.properties -->
 	<bean id="messageSource" lazy-init="false"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
@@ -33,14 +43,14 @@
 				<value>classpath:lang/lang</value>
 			</array>
 		</property>
-		<property name="defaultEncoding" value="UTF-8"/>
+		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
-	
+
 	<mvc:interceptors>
-        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
-            <property name="paramName" value="locale" />
-        </bean>
-    </mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="locale" />
+		</bean>
+	</mvc:interceptors>
 
 
 	<bean
